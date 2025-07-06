@@ -12,7 +12,7 @@
             Console.WriteLine("4. Please writing a program to generate following pyramid of numbers");
             Console.WriteLine("5. Please writing a program to solve a general quadratic equation: (aX2+bX+c=0)");
             Console.WriteLine("6. Please create function to validate data as below");
-            Console.WriteLine("7. Please create functions below");
+            Console.WriteLine("7. Please create functions to converting as below");
             Console.WriteLine("8. Please do researching and explain about C# Naming Convention");
             Console.WriteLine("9. Please explain about Search|Sort");
             Console.WriteLine("10. Please explain about Collection|Generic Collection");
@@ -74,7 +74,8 @@
                 ShowValidationMenu();
                 break;
             case 7:
-                Console.WriteLine("Exercise 7. Please create functions below...");
+                Console.WriteLine("Exercise 7. Please create functions to converting as below...");
+                ShowExercise7Menu();
                 break;
             case 8:
                 Console.WriteLine("Exercise 8. Please do researching and explain about C# Naming Convention...");
@@ -555,5 +556,179 @@
         {
             return false;
         }
+    }
+
+    static void ShowExercise7Menu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.OutputEncoding = System.Text.Encoding.UTF8; // For Khmer output
+            Console.WriteLine("==== Exercise 7 Sub-Menu ====");
+            Console.WriteLine("1. ConvertToKhmerNumber");
+            Console.WriteLine("2. ReadNumberAsLatinText");
+            Console.WriteLine("3. ReadNumberAsKhmerText");
+            Console.WriteLine("4. ScanInteger");
+            Console.WriteLine("5. ScanFloat");
+            Console.WriteLine("6. ScanDate");
+            Console.WriteLine("7. ScanNumeric (min/max)");
+            Console.WriteLine("8. GetKhmerDateFormat");
+            Console.WriteLine("0. Back to main menu");
+            Console.Write("Select an option (0-8): ");
+
+            string input = Console.ReadLine();
+            if (!int.TryParse(input, out int option) || option < 0 || option > 8)
+            {
+                Console.WriteLine("Invalid input. Press any key to try again.");
+                Console.ReadKey();
+                continue;
+            }
+            if (option == 0)
+                break;
+
+            switch (option)
+            {
+                case 1:
+                    Console.Write("Enter a string with numbers: ");
+                    string str = Console.ReadLine();
+                    Console.WriteLine("Khmer number: " + ConvertToKhmerNumber(str));
+                    break;
+                case 2:
+                    Console.Write("Enter a number: ");
+                    if (double.TryParse(Console.ReadLine(), out double latinNum))
+                        Console.WriteLine("Latin text: " + ReadNumberAsLatinText(latinNum));
+                    else
+                        Console.WriteLine("Invalid number.");
+                    break;
+                case 3:
+                    Console.Write("Enter a number: ");
+                    if (double.TryParse(Console.ReadLine(), out double khmerNum))
+                        Console.WriteLine("Khmer text: " + ReadNumberAsKhmerText(khmerNum));
+                    else
+                        Console.WriteLine("Invalid number.");
+                    break;
+                case 4:
+                    int intVal = ScanInteger();
+                    Console.WriteLine("Scanned integer: " + intVal);
+                    break;
+                case 5:
+                    float floatVal = ScanFloat();
+                    Console.WriteLine("Scanned float: " + floatVal);
+                    break;
+                case 6:
+                    DateTime dateVal = ScanDate();
+                    Console.WriteLine("Scanned date: " + dateVal.ToString("yyyy-MM-dd"));
+                    break;
+                case 7:
+                    Console.Write("Enter min value: ");
+                    double min = double.TryParse(Console.ReadLine(), out min) ? min : 0;
+                    Console.Write("Enter max value: ");
+                    double max = double.TryParse(Console.ReadLine(), out max) ? max : 100;
+                    double numVal = ScanNumeric(min, max);
+                    Console.WriteLine("Scanned number: " + numVal);
+                    break;
+                case 8:
+                    Console.Write("Enter date (yyyy-MM-dd): ");
+                    if (DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime khmerDate))
+                        Console.WriteLine("Khmer date: " + GetKhmerDateFormat(khmerDate));
+                    else
+                        Console.WriteLine("Invalid date.");
+                    break;
+            }
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+    }
+
+    static string ConvertToKhmerNumber(string str)
+    {
+        if (string.IsNullOrEmpty(str)) return str;
+        char[] khmerDigits = { '០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩' };
+        var result = new System.Text.StringBuilder();
+        foreach (char c in str)
+        {
+            if (char.IsDigit(c))
+                result.Append(khmerDigits[c - '0']);
+            else
+                result.Append(c);
+        }
+        return result.ToString();
+    }
+
+   
+    static string ReadNumberAsLatinText(double num)
+    {
+        // For brevity, use built-in ToString for now. For full text, use a library or implement number-to-words.
+        return num.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+   
+    static string ReadNumberAsKhmerText(double num)
+    {
+        // For demonstration, just convert digits to Khmer numerals
+        return ConvertToKhmerNumber(num.ToString());
+    }
+
+
+    static int ScanInteger()
+    {
+        int value;
+        while (true)
+        {
+            Console.Write("Enter an integer: ");
+            if (int.TryParse(Console.ReadLine(), out value))
+                return value;
+            Console.WriteLine("Invalid integer. Try again.");
+        }
+    }
+
+
+    static float ScanFloat()
+    {
+        float value;
+        while (true)
+        {
+            Console.Write("Enter a float: ");
+            if (float.TryParse(Console.ReadLine(), out value))
+                return value;
+            Console.WriteLine("Invalid float. Try again.");
+        }
+    }
+
+
+    static DateTime ScanDate()
+    {
+        DateTime value;
+        while (true)
+        {
+            Console.Write("Enter a date (yyyy-MM-dd): ");
+            if (DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out value))
+                return value;
+            Console.WriteLine("Invalid date. Try again.");
+        }
+    }
+
+    static double ScanNumeric(double minValue, double maxValue)
+    {
+        double value;
+        while (true)
+        {
+            Console.Write($"Enter a number between {minValue} and {maxValue}: ");
+            if (double.TryParse(Console.ReadLine(), out value) && value >= minValue && value <= maxValue)
+                return value;
+            Console.WriteLine("Invalid number or out of range. Try again.");
+        }
+    }
+
+ 
+    static string GetKhmerDateFormat(DateTime date)
+    {
+        string[] khmerDays = { "អាទិត្យ", "ច័ន្ទ", "អង្គារ", "ពុធ", "ព្រហស្បតិ៍", "សុក្រ", "សៅរ៍" };
+        string[] khmerMonths = { "", "មករា", "កុម្ភៈ", "មីនា", "មេសា", "ឧសភា", "មិថុនា", "កក្កដា", "សីហា", "កញ្ញា", "តុលា", "វិច្ឆិកា", "ធ្នូ" };
+        string dayName = "ថ្ងៃ" + khmerDays[(int)date.DayOfWeek];
+        string dayNum = "ទី" + ConvertToKhmerNumber(date.Day.ToString());
+        string month = "ខែ" + khmerMonths[date.Month];
+        string year = "ឆ្នាំ" + ConvertToKhmerNumber(date.Year.ToString());
+        return $"{dayName} {dayNum} {month} {year}";
     }
 }
