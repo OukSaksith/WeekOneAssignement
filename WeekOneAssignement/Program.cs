@@ -91,6 +91,7 @@ internal class Program
                 break;
             case 11:
                 Console.WriteLine("Exercise 11. Please create any kind of A lottery (or lotto) game by using C# Console Application...");
+                TestLotteryGame();
                 break;
             default:
                 Console.WriteLine("Unknown exercise.");
@@ -1066,5 +1067,73 @@ internal class Program
 
         Console.WriteLine("Press any key to return...");
         Console.ReadKey();
+    }
+
+    static void TestLotteryGame() {
+        Console.WriteLine("Welcome to the C# Lottery Game!");
+        Console.WriteLine("Pick 6 unique numbers between 1 and 49.");
+
+        List<int> winningNumbers = GenerateWinningNumbers();
+        Console.WriteLine("Hint: " + string.Join(", ", winningNumbers));
+
+        List<int> userNumbers = GetUserNumbers();
+        
+
+        Console.WriteLine("\nYour numbers: " + string.Join(", ", userNumbers));
+        Console.WriteLine("Winning numbers: " + string.Join(", ", winningNumbers));
+
+        var matchedNumbers = userNumbers.Intersect(winningNumbers).ToList();
+
+        Console.WriteLine($"\n You matched {matchedNumbers.Count} number(s): {string.Join(", ", matchedNumbers)}");
+
+        if (matchedNumbers.Count == 6)
+            Console.WriteLine("JACKPOT!!! You won the lottery!");
+        else if (matchedNumbers.Count >= 3)
+            Console.WriteLine("Great! You win a small prize!");
+        else
+            Console.WriteLine("Better luck next time!");
+    }
+
+    static List<int> GetUserNumbers()
+    {
+        var userNumbers = new HashSet<int>();
+
+        while (userNumbers.Count < 6)
+        {
+            Console.Write($"Enter number {userNumbers.Count + 1}: ");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int number))
+            {
+                if (number < 1 || number > 49)
+                {
+                    Console.WriteLine("Number must be between 1 and 49.");
+                }
+                else if (!userNumbers.Add(number))
+                {
+                    Console.WriteLine("Number already entered. Choose a different one.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a number.");
+            }
+        }
+
+        return userNumbers.ToList();
+    }
+
+    static List<int> GenerateWinningNumbers()
+    {
+        var rand = new Random();
+        var numbers = new HashSet<int>();
+
+        while (numbers.Count < 6)
+        {
+            numbers.Add(rand.Next(1, 50)); // 1 to 49
+        }
+
+
+        return numbers.ToList();
     }
 }
