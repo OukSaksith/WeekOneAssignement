@@ -63,6 +63,7 @@
                 break;
             case 4:
                 Console.WriteLine("Exercise 4. Please writing a program to generate following pyramid of numbers...");
+                GenerateNumberPyramid();
                 break;
             case 5:
                 Console.WriteLine("Exercise 5. Please writing a program to solve a general quadratic equation: (aX2+bX+c=0)...");
@@ -306,5 +307,33 @@
         for (int i = 2; i <= n; i += 2)
             sum += i * i;
         return sum;
+    }
+
+    static void GenerateNumberPyramid()
+    {
+        int rows = 7;
+        int maxWidth = (rows - 1) * 2 + 1; // The width of the last row (number of digits)
+
+        for (int i = 0; i < rows; i++)
+        {
+            // Build the line as a string
+            var line = new System.Text.StringBuilder();
+
+            // Descending part
+            for (int j = i; j >= 0; j--)
+            {
+                line.Append(j);
+            }
+            // Ascending part
+            for (int j = 1; j <= i; j++)
+            {
+                line.Append(j);
+            }
+
+            // Calculate padding for center alignment
+            int padding = (maxWidth - line.Length) / 2;
+            Console.Write(new string(' ', padding));
+            Console.WriteLine(line.ToString());
+        }
     }
 }
