@@ -67,6 +67,7 @@
                 break;
             case 5:
                 Console.WriteLine("Exercise 5. Please writing a program to solve a general quadratic equation: (aX2+bX+c=0)...");
+                SolveQuadraticEquation();
                 break;
             case 6:
                 Console.WriteLine("Exercise 6. Please create function to validate data as below...");
@@ -334,6 +335,71 @@
             int padding = (maxWidth - line.Length) / 2;
             Console.Write(new string(' ', padding));
             Console.WriteLine(line.ToString());
+        }
+    }
+
+    static void SolveQuadraticEquation()
+    {
+        float a, b, c, x, x1, x2, beta;
+
+        // Input a, b, c
+        Console.Write("Enter value for a: ");
+        while (!float.TryParse(Console.ReadLine(), out a))
+        {
+            Console.Write("Invalid input. Enter a valid float for a: ");
+        }
+
+        Console.Write("Enter value for b: ");
+        while (!float.TryParse(Console.ReadLine(), out b))
+        {
+            Console.Write("Invalid input. Enter a valid float for b: ");
+        }
+
+        Console.Write("Enter value for c: ");
+        while (!float.TryParse(Console.ReadLine(), out c))
+        {
+            Console.Write("Invalid input. Enter a valid float for c: ");
+        }
+
+        // Special Case: a == 0
+        if (a == 0)
+        {
+            if (b == 0)
+            {
+                if (c == 0)
+                {
+                    Console.WriteLine("Infinite solutions (all real numbers are solutions).");
+                }
+                else
+                {
+                    Console.WriteLine("No solution (inconsistent equation).");
+                }
+            }
+            else
+            {
+                x = -c / b;
+                Console.WriteLine($"Linear equation. Single root: x = {x}");
+            }
+            return;
+        }
+
+        // Normal Case: a != 0
+        beta = b * b - 4 * a * c;
+        if (beta < 0)
+        {
+            Console.WriteLine("No real root.");
+        }
+        else if (beta == 0)
+        {
+            x = -b / (2 * a);
+            Console.WriteLine($"One real root: x = {x}");
+        }
+        else
+        {
+            float sqrtBeta = (float)Math.Sqrt(beta);
+            x1 = (-b - sqrtBeta) / (2 * a);
+            x2 = (-b + sqrtBeta) / (2 * a);
+            Console.WriteLine($"Two real roots: x1 = {x1}, x2 = {x2}");
         }
     }
 }
