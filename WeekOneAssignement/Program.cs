@@ -78,7 +78,7 @@
                 ShowExercise7Menu();
                 break;
             case 8:
-                Console.WriteLine("Exercise 8. Please do researching and explain about C# Naming Convention...");
+                ExplainCSharpNamingConvention();
                 break;
             case 9:
                 Console.WriteLine("Exercise 9. Please explain about Search|Sort");
@@ -730,5 +730,67 @@
         string month = "ខែ" + khmerMonths[date.Month];
         string year = "ឆ្នាំ" + ConvertToKhmerNumber(date.Year.ToString());
         return $"{dayName} {dayNum} {month} {year}";
+    }
+
+    static void ExplainCSharpNamingConvention()
+    {
+        Console.Clear();
+        Console.WriteLine("==== C# Naming Convention Explanation ====\n");
+        Console.WriteLine("C# naming conventions help make code readable, maintainable, and consistent.");
+        Console.WriteLine("Here are the most important conventions with examples:\n");
+
+        Console.WriteLine("1. PascalCase");
+        Console.WriteLine("   - Used for: Class, Method, Property, Namespace, Enum names");
+        Console.WriteLine("   - Example:");
+        Console.WriteLine("     public class StudentInfo {");
+        Console.WriteLine("         public string FirstName { get; set; }");
+        Console.WriteLine("         public void PrintDetails() { }");
+        Console.WriteLine("     }\n");
+
+        Console.WriteLine("2. camelCase");
+        Console.WriteLine("   - Used for: Local variables, method parameters, private fields (sometimes with _ prefix)");
+        Console.WriteLine("   - Example:");
+        Console.WriteLine("     void CalculateTotal(int itemCount, double itemPrice) {");
+        Console.WriteLine("         double totalAmount = itemCount * itemPrice;");
+        Console.WriteLine("     }\n");
+
+        Console.WriteLine("3. ALL_CAPS_WITH_UNDERSCORES");
+        Console.WriteLine("   - Used for: Constants and static readonly fields");
+        Console.WriteLine("   - Example:");
+        Console.WriteLine("     public const double PI = 3.14159;");
+        Console.WriteLine("     private static readonly int MAX_SIZE = 100;\n");
+
+        Console.WriteLine("4. Interface Names");
+        Console.WriteLine("   - Start with 'I' and use PascalCase");
+        Console.WriteLine("   - Example:");
+        Console.WriteLine("     public interface IRepository { }\n");
+
+        Console.WriteLine("5. Event Names");
+        Console.WriteLine("   - Use PascalCase, usually a verb or verb phrase");
+        Console.WriteLine("   - Example:");
+        Console.WriteLine("     public event EventHandler DataLoaded;\n");
+
+        Console.WriteLine("6. Namespace Names");
+        Console.WriteLine("   - Use PascalCase, match project structure");
+        Console.WriteLine("   - Example:");
+        Console.WriteLine("     namespace MyCompany.Project.Module { }\n");
+
+        Console.WriteLine("Summary Table:");
+        Console.WriteLine("Element      | Convention   | Example");
+        Console.WriteLine("-------------|-------------|----------------------");
+        Console.WriteLine("Class        | PascalCase  | StudentInfo");
+        Console.WriteLine("Method       | PascalCase  | PrintDetails()");
+        Console.WriteLine("Property     | PascalCase  | FirstName");
+        Console.WriteLine("Variable     | camelCase   | totalAmount");
+        Console.WriteLine("Constant     | ALL_CAPS    | PI, MAX_SIZE");
+        Console.WriteLine("Interface    | I + Pascal  | IRepository");
+        Console.WriteLine("Namespace    | PascalCase  | MyCompany.Project\n");
+
+        Console.WriteLine("References:");
+        Console.WriteLine(" - https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions");
+        Console.WriteLine(" - https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines\n");
+
+        Console.WriteLine("Press any key to return...");
+        Console.ReadKey();
     }
 }
