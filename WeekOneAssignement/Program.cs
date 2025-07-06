@@ -1,4 +1,6 @@
-﻿internal class Program
+﻿using System.Collections;
+
+internal class Program
 {
     private static void Main(string[] args)
     {
@@ -85,6 +87,7 @@
                 break;
             case 10:
                 Console.WriteLine("Exercise 10. Please explain about Collection|Generic Collection...");
+                ShowCaseCollectionMenu();
                 break;
             case 11:
                 Console.WriteLine("Exercise 11. Please create any kind of A lottery (or lotto) game by using C# Console Application...");
@@ -951,5 +954,117 @@
             arr[i] = arr[minIdx];
             arr[minIdx] = temp;
         }
+    }
+
+
+    static void ShowCaseCollectionMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("==== Generic and Non-Generic Collection ====");
+            Console.WriteLine("1. Documentation (Explain Generic and Non-Generic Collection)");
+            Console.WriteLine("2. Test Generic and Non-Generic Collection Algorithms");
+            Console.WriteLine("0. Back to main menu");
+            Console.Write("Select an option (0-2): ");
+            string input = Console.ReadLine();
+            if (!int.TryParse(input, out int option) || option < 0 || option > 2)
+            {
+                Console.WriteLine("Invalid input. Press any key to try again.");
+                Console.ReadKey();
+                continue;
+            }
+            if (option == 0)
+                break;
+
+            switch (option)
+            {
+                case 1:
+                    ExplainGenericAndNonGenericCollection();
+                    break;
+                case 2:
+                    TestGenericAndNonGenericCollection();
+                    break;
+            }
+        }
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    static void ExplainGenericAndNonGenericCollection()
+    {
+        Console.WriteLine("=== .NET Core Collections and Generic Collections ===\n");
+
+        Console.WriteLine("1. Non-Generic Collections:");
+        Console.WriteLine("- Found in System.Collections");
+        Console.WriteLine("- Store any type as object (no type safety)");
+        Console.WriteLine("- Examples: ArrayList, Hashtable, Stack, Queue\n");
+
+        Console.WriteLine("2. Generic Collections:");
+        Console.WriteLine("- Found in System.Collections.Generic");
+        Console.WriteLine("- Type-safe and better performance");
+        Console.WriteLine("- Examples: List<T>, Dictionary<TKey,TValue>, HashSet<T>, Queue<T>\n");
+
+        Console.WriteLine("3. Differences:");
+        Console.WriteLine("- Generic collections prevent runtime errors by enforcing type safety.");
+        Console.WriteLine("- Non-generic collections are legacy and may cause boxing/unboxing issues.\n");
+
+        Console.WriteLine("4. Recommendation:");
+        Console.WriteLine("- Always prefer generic collections in modern .NET applications.\n");
+
+
+        Console.WriteLine("Press any key to return...");
+        Console.ReadKey();
+    }
+
+    static void TestGenericAndNonGenericCollection()
+    {
+        Console.WriteLine("=== Test: Non-Generic Collection (ArrayList) ===");
+
+        ArrayList arrayList = new ArrayList();
+        arrayList.Add(1);             // int
+        arrayList.Add("Hello");       // string
+        arrayList.Add(DateTime.Now);  // DateTime
+
+        foreach (var item in arrayList)
+        {
+            Console.WriteLine($"[ArrayList] Value: {item} (Type: {item.GetType()})");
+        }
+
+        // Casting required
+        int numFromArrayList = (int)arrayList[0];
+        Console.WriteLine($"First item cast to int: {numFromArrayList}\n");
+
+        Console.WriteLine("=== Test: Generic Collection (List<int>) ===");
+
+        List<int> intList = new List<int> { 10, 20, 30 };
+        foreach (int number in intList)
+        {
+            Console.WriteLine($"[List<int>] Value: {number}");
+        }
+
+        int numFromList = intList[1]; // No cast needed
+        Console.WriteLine($"Second item in List<int>: {numFromList}\n");
+
+
+
+
+
+        Console.WriteLine("=== Test: Generic Collection (Dictionary<string, int>) ===");
+
+        Dictionary<string, int> scores = new Dictionary<string, int>
+            {
+                { "Alice", 90 },
+                { "Bob", 75 }
+            };
+
+        foreach (var entry in scores)
+        {
+            Console.WriteLine($"[Dictionary] Key: {entry.Key}, Value: {entry.Value}");
+        }
+
+
+        Console.WriteLine("Press any key to return...");
+        Console.ReadKey();
     }
 }
