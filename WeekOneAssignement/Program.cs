@@ -55,6 +55,7 @@
                 break;
             case 2:
                 Console.WriteLine("Exercise 2. Payment for KTV...");
+                CalculateKtvPayment();
                 break;
             case 3:
                 Console.WriteLine("Exercise 3. Please writing a program to sum a series of the numbers below...");
@@ -136,6 +137,66 @@
         decimal totalAmount = totalDays * pricePerDay;
 
         Console.WriteLine($"Total days charged: {totalDays}");
+        Console.WriteLine($"Total amount to pay: ${totalAmount}");
+    }
+
+    static void CalculateKtvPayment()
+    {
+        const decimal pricePerHour = 3m;
+        DateTime checkIn, checkOut;
+
+        // Input check-in time
+        while (true)
+        {
+            Console.Write("Enter check-in time (yyyy-MM-dd HH:mm): ");
+            string checkInInput = Console.ReadLine();
+            if (DateTime.TryParseExact(checkInInput, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out checkIn))
+            {
+                break;
+            }
+            Console.WriteLine("Invalid format. Please try again.");
+        }
+
+        // Input check-out time
+        while (true)
+        {
+            Console.Write("Enter check-out time (yyyy-MM-dd HH:mm): ");
+            string checkOutInput = Console.ReadLine();
+            if (DateTime.TryParseExact(checkOutInput, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out checkOut))
+            {
+                if (checkOut > checkIn)
+                    break;
+                else
+                    Console.WriteLine("Check-out must be after check-in. Please try again.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid format. Please try again.");
+            }
+        }
+
+        TimeSpan duration = checkOut - checkIn;
+        int hours = duration.Hours + duration.Days * 24;
+        int minutes = duration.Minutes;
+
+        decimal totalHours = hours;
+
+        if (minutes > 45)
+        {
+            totalHours += 1;
+        }
+        else if (minutes > 15)
+        {
+            totalHours += 0.5m;
+        }
+        else if (minutes > 0)
+        {
+            // If minutes are between 1 and 15, do not add extra time
+        }
+
+        decimal totalAmount = totalHours * pricePerHour;
+
+        Console.WriteLine($"Total hours charged: {totalHours}");
         Console.WriteLine($"Total amount to pay: ${totalAmount}");
     }
 
