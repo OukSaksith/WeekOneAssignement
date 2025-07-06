@@ -134,8 +134,10 @@ internal class Program
             }
         }
 
-        // Calculate number of days
-        int totalDays = (int)(checkOut.Date - checkIn.Date).TotalDays + 1;
+        // Calculate total days
+        int totalDays = (int)(checkOut.Date - checkIn.Date).TotalDays;
+        if (totalDays == 0)
+            totalDays = 1;
 
         // If checkout time is after 12:00pm, add one more day
         if (checkOut.TimeOfDay > new TimeSpan(12, 0, 0))
