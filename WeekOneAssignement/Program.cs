@@ -59,6 +59,7 @@
                 break;
             case 3:
                 Console.WriteLine("Exercise 3. Please writing a program to sum a series of the numbers below...");
+                ShowSumSeriesMenu();
                 break;
             case 4:
                 Console.WriteLine("Exercise 4. Please writing a program to generate following pyramid of numbers...");
@@ -200,4 +201,110 @@
         Console.WriteLine($"Total amount to pay: ${totalAmount}");
     }
 
+    static void ShowSumSeriesMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("==== Sum Series Sub-Menu ====");
+            Console.WriteLine("1. Sum of n + (n-1) + (n-2) + ... + 1");
+            Console.WriteLine("2. Sum of 1 + 3 + 5 + ... + n (odd numbers)");
+            Console.WriteLine("3. Sum of 1 + 2 + 4 + 6 + 8 + ... + n (1, then all even numbers up to n)");
+            Console.WriteLine("4. Sum of 1^2 + 2^2 + 3^2 + ... + n^2");
+            Console.WriteLine("5. Sum of 1^2 + 3^2 + 5^2 + ... + n^2 (odd squares)");
+            Console.WriteLine("6. Sum of 1^2 + 2^2 + 4^2 + ... + n^2 (1^2, then all even squares up to n^2)");
+            Console.WriteLine("0. Back to main menu");
+            Console.Write("Select an option (0-6):");
+
+            string input = Console.ReadLine();
+            if (!int.TryParse(input, out int option) || option < 0 || option > 7)
+            {
+                Console.WriteLine("Invalid input. Press any key to try again.");
+                Console.ReadKey();
+                continue;
+            }
+
+            if (option == 0)
+                break;
+
+            Console.Write("Enter N: ");
+            if (!int.TryParse(Console.ReadLine(), out int n) || n < 1)
+            {
+                Console.WriteLine("Invalid N. Press any key to try again.");
+                Console.ReadKey();
+                continue;
+            }
+
+            switch (option)
+            {
+                case 1:
+                    Console.WriteLine($"Sum of n + (n-1) + ... + 1 where n={n}: {SumDescendingTo1(n)}");
+                    break;
+                case 2:
+                    Console.WriteLine($"Sum of 1 + 3 + 5 + ... + n: {SumOddSeriesToN(n)}");
+                    break;
+                case 3:
+                    Console.WriteLine($"Sum of 1 + 2 + 4 + 6 + 8 + ... + n: {SumOneAndEvensToN(n)}");
+                    break;
+                case 4:
+                    Console.WriteLine($"Sum of 1^2 + 2^2 + ... + {n}^2: {SumSquaresToN(n)}");
+                    break;
+                case 5:
+                    Console.WriteLine($"Sum of 1^2 + 3^2 + ... + {n}^2: {SumOddSquaresToN(n)}");
+                    break;
+                case 6:
+                    Console.WriteLine($"Sum of 1^2 + 2^2 + 4^2 + ... + {n}^2: {SumOneAndEvenSquaresToN(n)}");
+                    break;
+            }
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+    }
+    static int SumDescendingTo1(int n)
+    {
+        int sum = 0;
+        for (int i = n; i >= 1; i--)
+            sum += i;
+        return sum;
+    }
+
+    static int SumOddSeriesToN(int n)
+    {
+        int sum = 0;
+        for (int i = 1; i <= n; i += 2)
+            sum += i;
+        return sum;
+    }
+
+    static int SumOneAndEvensToN(int n)
+    {
+        int sum = 1;
+        for (int i = 2; i <= n; i += 2)
+            sum += i;
+        return sum;
+    }
+
+    static int SumSquaresToN(int n)
+    {
+        int sum = 0;
+        for (int i = 1; i <= n; i++)
+            sum += i * i;
+        return sum;
+    }
+
+    static int SumOddSquaresToN(int n)
+    {
+        int sum = 0;
+        for (int i = 1; i <= n; i += 2)
+            sum += i * i;
+        return sum;
+    }
+
+    static int SumOneAndEvenSquaresToN(int n)
+    {
+        int sum = 1 * 1;
+        for (int i = 2; i <= n; i += 2)
+            sum += i * i;
+        return sum;
+    }
 }
