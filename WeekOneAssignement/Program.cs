@@ -71,6 +71,7 @@
                 break;
             case 6:
                 Console.WriteLine("Exercise 6. Please create function to validate data as below...");
+                ShowValidationMenu();
                 break;
             case 7:
                 Console.WriteLine("Exercise 7. Please create functions below...");
@@ -400,6 +401,159 @@
             x1 = (-b - sqrtBeta) / (2 * a);
             x2 = (-b + sqrtBeta) / (2 * a);
             Console.WriteLine($"Two real roots: x1 = {x1}, x2 = {x2}");
+        }
+    }
+
+    static void ShowValidationMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("==== Data Validation Menu ====");
+            Console.WriteLine("1. IsValidLength");
+            Console.WriteLine("2. IsInteger");
+            Console.WriteLine("3. IsFloat");
+            Console.WriteLine("4. IsNumber");
+            Console.WriteLine("5. IsDate");
+            Console.WriteLine("6. IsDateTime");
+            Console.WriteLine("7. IsLatinName");
+            Console.WriteLine("8. IsKhmerName");
+            Console.WriteLine("9. IsStrongPassword");
+            Console.WriteLine("10. IsValidEmail");
+            Console.WriteLine("11. IsValidWebsite");
+            Console.WriteLine("0. Back to main menu");
+            Console.Write("Select an option (0-11): ");
+
+            string input = Console.ReadLine();
+            if (!int.TryParse(input, out int option) || option < 0 || option > 11)
+            {
+                Console.WriteLine("Invalid input. Press any key to try again.");
+                Console.ReadKey();
+                continue;
+            }
+            if (option == 0)
+                break;
+
+            string value = "";
+            int length = 0;
+            bool isValid = false;
+
+            switch (option)
+            {
+                case 1:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    Console.Write("Enter required length: ");
+                    if (!int.TryParse(Console.ReadLine(), out length))
+                    {
+                        Console.WriteLine("Invalid length. Press any key to continue...");
+                        Console.ReadKey();
+                        continue;
+                    }
+                    isValid = IsValidLength(value, length);
+                    Console.WriteLine(isValid ? "Valid length." : "Invalid length.");
+                    break;
+                case 2:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    isValid = int.TryParse(value, out _);
+                    Console.WriteLine(isValid ? "Valid integer." : "Invalid integer.");
+                    break;
+                case 3:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    isValid = float.TryParse(value, out _);
+                    Console.WriteLine(isValid ? "Valid float." : "Invalid float.");
+                    break;
+                case 4:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    isValid = double.TryParse(value, out _);
+                    Console.WriteLine(isValid ? "Valid number." : "Invalid number.");
+                    break;
+                case 5:
+                    Console.Write("Enter value to validate (yyyy-MM-dd): ");
+                    value = Console.ReadLine();
+                    isValid = DateTime.TryParseExact(value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out _);
+                    Console.WriteLine(isValid ? "Valid date." : "Invalid date.");
+                    break;
+                case 6:
+                    Console.Write("Enter value to validate (yyyy-MM-dd HH:mm): ");
+                    value = Console.ReadLine();
+                    isValid = DateTime.TryParseExact(value, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out _);
+                    Console.WriteLine(isValid ? "Valid date time." : "Invalid date time.");
+                    break;
+                case 7:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    isValid = System.Text.RegularExpressions.Regex.IsMatch(value, @"^[A-Za-z\s]+$");
+                    Console.WriteLine(isValid ? "Valid Latin name." : "Invalid Latin name.");
+                    break;
+                case 8:
+                    Console.OutputEncoding = System.Text.Encoding.UTF8; // Ensure console outputs Unicode correctly
+                    Console.InputEncoding = System.Text.Encoding.UTF8;  // Ensure console reads Unicode input correctly
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+
+                    // Improved Khmer Unicode validation: allow Khmer letters, spaces, and common Khmer punctuation
+                    isValid = !string.IsNullOrEmpty(value) && System.Text.RegularExpressions.Regex.IsMatch(
+                        value, @"^[\u1780-\u17FF\u200B\u25CC\u17D4\u17D6\s]+$");
+                    Console.WriteLine(isValid ? "Valid Khmer name." : "Invalid Khmer name.");
+                    break;
+                case 9:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    isValid = IsStrongPassword(value);
+                    Console.WriteLine(isValid ? "Strong password." : "Weak password.");
+                    break;
+                case 10:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    isValid = IsValidEmail(value);
+                    Console.WriteLine(isValid ? "Valid email." : "Invalid email.");
+                    break;
+                case 11:
+                    Console.Write("Enter value to validate: ");
+                    value = Console.ReadLine();
+                    isValid = Uri.TryCreate(value, UriKind.Absolute, out Uri uriResult) &&
+                              (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                    Console.WriteLine(isValid ? "Valid website." : "Invalid website.");
+                    break;
+            }
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+    }
+
+    static bool IsValidLength(string str, int ln)
+    {
+        if (string.IsNullOrEmpty(str)) return false;
+        return str.Length == ln;
+    }
+
+    static bool IsStrongPassword(string password)
+    {
+        if (string.IsNullOrEmpty(password) || password.Length < 8) return false;
+        bool hasUpper = false, hasLower = false, hasDigit = false;
+        foreach (char c in password)
+        {
+            if (char.IsUpper(c)) hasUpper = true;
+            if (char.IsLower(c)) hasLower = true;
+            if (char.IsDigit(c)) hasDigit = true;
+        }
+        return hasUpper && hasLower && hasDigit;
+    }
+
+    static bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
         }
     }
 }
