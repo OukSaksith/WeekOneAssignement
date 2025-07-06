@@ -81,7 +81,7 @@
                 ExplainCSharpNamingConvention();
                 break;
             case 9:
-                Console.WriteLine("Exercise 9. Please explain about Search|Sort");
+                ShowSearchAndSortMenu();
                 break;
             case 10:
                 Console.WriteLine("Exercise 10. Please explain about Collection|Generic Collection...");
@@ -792,5 +792,164 @@
 
         Console.WriteLine("Press any key to return...");
         Console.ReadKey();
+    }
+
+    static void ExplainSearchAndSort()
+    {
+        Console.Clear();
+        Console.WriteLine("==== Search and Sort Explanation ====\n");
+        Console.WriteLine("Search and Sort are fundamental operations in computer science and programming.");
+        Console.WriteLine("Here is an overview of common algorithms and their use cases:\n");
+
+        Console.WriteLine("1. Search Algorithms:");
+        Console.WriteLine("   - Linear Search:");
+        Console.WriteLine("     * Description: Iterates through each element in a list to find the target.");
+        Console.WriteLine("     * Complexity: O(n)");
+        Console.WriteLine("     * Use Case: Small datasets or unsorted lists.\n");
+
+        Console.WriteLine("   - Binary Search:");
+        Console.WriteLine("     * Description: Divides a sorted list into halves to find the target.");
+        Console.WriteLine("     * Complexity: O(log n)");
+        Console.WriteLine("     * Use Case: Large datasets that are sorted.\n");
+
+        Console.WriteLine("2. Sort Algorithms:");
+        Console.WriteLine("   - Bubble Sort:");
+        Console.WriteLine("     * Description: Repeatedly swaps adjacent elements if they are in the wrong order.");
+        Console.WriteLine("     * Complexity: O(n^2)");
+        Console.WriteLine("     * Use Case: Educational purposes or very small datasets.\n");
+
+        Console.WriteLine("   - Quick Sort:");
+        Console.WriteLine("     * Description: Divides the list into smaller sublists based on a pivot element.");
+        Console.WriteLine("     * Complexity: O(n log n) on average.");
+        Console.WriteLine("     * Use Case: General-purpose sorting.\n");
+
+        Console.WriteLine("   - Merge Sort:");
+        Console.WriteLine("     * Description: Divides the list into halves, sorts each half, and merges them.");
+        Console.WriteLine("     * Complexity: O(n log n)");
+        Console.WriteLine("     * Use Case: Sorting linked lists or datasets requiring stable sorting.\n");
+
+        Console.WriteLine("3. Applications:");
+        Console.WriteLine("   - Search and Sort are used in databases, file systems, and data analysis.");
+        Console.WriteLine("   - Efficient algorithms improve performance in real-world applications.\n");
+
+        Console.WriteLine("References:");
+        Console.WriteLine(" - https://en.wikipedia.org/wiki/Search_algorithm");
+        Console.WriteLine(" - https://en.wikipedia.org/wiki/Sorting_algorithm\n");
+
+        Console.WriteLine("Press any key to return...");
+        Console.ReadKey();
+    }
+
+    static void ShowSearchAndSortMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("==== Search & Sort Menu ====");
+            Console.WriteLine("1. Documentation (Explain Search & Sort)");
+            Console.WriteLine("2. Test Search & Sort Algorithms");
+            Console.WriteLine("0. Back to main menu");
+            Console.Write("Select an option (0-2): ");
+            string input = Console.ReadLine();
+            if (!int.TryParse(input, out int option) || option < 0 || option > 2)
+            {
+                Console.WriteLine("Invalid input. Press any key to try again.");
+                Console.ReadKey();
+                continue;
+            }
+            if (option == 0)
+                break;
+
+            switch (option)
+            {
+                case 1:
+                    ExplainSearchAndSort();
+                    break;
+                case 2:
+                    TestSearchAndSort();
+                    break;
+            }
+        }
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    static void TestSearchAndSort()
+    {
+        Console.Clear();
+        int[] arr = { 5, 2, 9, 1, 7, 3 };
+        Console.WriteLine("Original array: " + string.Join(", ", arr));
+
+        // Linear Search
+        Console.Write("Linear Search - Enter value to search: ");
+        int target = int.TryParse(Console.ReadLine(), out target) ? target : 0;
+        int idx = LinearSearch(arr, target);
+        Console.WriteLine(idx >= 0 ? $"Found at index {idx}" : "Not found");
+
+        // Binary Search (requires sorted array)
+        Array.Sort(arr);
+        Console.WriteLine("Sorted array for Binary Search: " + string.Join(", ", arr));
+        Console.Write("Binary Search - Enter value to search: ");
+        int bTarget = int.TryParse(Console.ReadLine(), out bTarget) ? bTarget : 0;
+        int bIdx = BinarySearch(arr, bTarget);
+        Console.WriteLine(bIdx >= 0 ? $"Found at index {bIdx}" : "Not found");
+
+        // Bubble Sort
+        int[] bubbleArr = { 5, 2, 9, 1, 7, 3 };
+        BubbleSort(bubbleArr);
+        Console.WriteLine("Bubble Sorted: " + string.Join(", ", bubbleArr));
+
+        // Selection Sort
+        int[] selArr = { 5, 2, 9, 1, 7, 3 };
+        SelectionSort(selArr);
+        Console.WriteLine("Selection Sorted: " + string.Join(", ", selArr));
+
+        Console.WriteLine("Press any key to return...");
+        Console.ReadKey();
+    }
+
+    static int LinearSearch(int[] arr, int target)
+    {
+        for (int i = 0; i < arr.Length; i++)
+            if (arr[i] == target) return i;
+        return -1;
+    }
+
+    static int BinarySearch(int[] arr, int target)
+    {
+        int left = 0, right = arr.Length - 1;
+        while (left <= right)
+        {
+            int mid = (left + right) / 2;
+            if (arr[mid] == target) return mid;
+            else if (arr[mid] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+        return -1;
+    }
+
+    static void BubbleSort(int[] arr)
+    {
+        for (int i = 0; i < arr.Length - 1; i++)
+            for (int j = 0; j < arr.Length - i - 1; j++)
+                if (arr[j] > arr[j + 1])
+                {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+    }
+
+    static void SelectionSort(int[] arr)
+    {
+        for (int i = 0; i < arr.Length - 1; i++)
+        {
+            int minIdx = i;
+            for (int j = i + 1; j < arr.Length; j++)
+                if (arr[j] < arr[minIdx]) minIdx = j;
+            int temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
+        }
     }
 }
