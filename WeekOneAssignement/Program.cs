@@ -646,33 +646,85 @@ internal class Program
         }
     }
 
-    static string ConvertToKhmerNumber(string str)
-    {
-        if (string.IsNullOrEmpty(str)) return str;
-        char[] khmerDigits = { '០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩' };
-        var result = new System.Text.StringBuilder();
-        foreach (char c in str)
-        {
-            if (char.IsDigit(c))
-                result.Append(khmerDigits[c - '0']);
-            else
-                result.Append(c);
-        }
-        return result.ToString();
-    }
+
 
    
     static string ReadNumberAsLatinText(double num)
     {
-        // For brevity, use built-in ToString for now. For full text, use a library or implement number-to-words.
-        return num.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+        long whole = (long)num;
+        int cents = (int)((num - whole) * 100);
+        string result = ToWords(whole);
+        return cents > 0 ? $"{result} and {ToWords(cents)} Cents" : result;
+    }
+    static string ToWords(long n)
+    {
+        if (n == 0) return "Zero";
+        if (n < 0) return "Minus " + ToWords(-n);
+
+        string[] units = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+                           "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+                           "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
+        string[] tens = { "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+
+        string words = "";
+
+        if (n >= 1_000_000_000) { words += ToWords(n / 1_000_000_000) + " Billion "; n %= 1_000_000_000; }
+        if (n >= 1_000_000) { words += ToWords(n / 1_000_000) + " Million "; n %= 1_000_000; }
+        if (n >= 1000) { words += ToWords(n / 1000) + " Thousand "; n %= 1000; }
+        if (n >= 100) { words += ToWords(n / 100) + " Hundred "; n %= 100; }
+
+        if (n > 0)
+        {
+            if (n < 20) words += units[n];
+            else words += tens[n / 10] + (n % 10 > 0 ? "-" + units[n % 10] : "");
+        }
+
+        return words.Trim();
     }
 
-   
+
     static string ReadNumberAsKhmerText(double num)
     {
-        // For demonstration, just convert digits to Khmer numerals
-        return ConvertToKhmerNumber(num.ToString());
+        long whole = (long)num;
+        int cents = (int)((num - whole) * 100);
+
+        string result = KhmerNumberToWords(whole);
+        if (cents > 0)
+            result += " និង " + KhmerNumberToWords(cents) + " សេន";
+        return result;
+    }
+
+    static string KhmerNumberToWords(long num)
+    {
+        if (num == 0) return "សូន្យ";
+
+        string[] khNum = { "", "មួយ", "ពីរ", "បី", "បួន", "ប្រាំ", "ប្រាំមួយ", "ប្រាំពីរ", "ប្រាំបី", "ប្រាំបួន" };
+        string[] khTen = { "", "ដប់", "ម្ភៃ", "សាមសិប", "សែសិប", "ហាសិប", "ហុកសិប", "ចិតសិប", "ប៉ែតសិប", "កៅសិប" };
+
+        string words = "";
+
+        if (num >= 1000)
+        {
+            words += KhmerNumberToWords(num / 1000) + "ពាន់";
+            num %= 1000;
+        }
+        if (num >= 100)
+        {
+            words += KhmerNumberToWords(num / 100) + "រយ";
+            num %= 100;
+        }
+        if (num >= 10)
+        {
+            words += khTen[num / 10];
+            if (num % 10 > 0)
+                words += khNum[num % 10];
+        }
+        else if (num > 0)
+        {
+            words += khNum[num];
+        }
+
+        return words;
     }
 
 
@@ -736,6 +788,20 @@ internal class Program
         string month = "ខែ" + khmerMonths[date.Month];
         string year = "ឆ្នាំ" + ConvertToKhmerNumber(date.Year.ToString());
         return $"{dayName} {dayNum} {month} {year}";
+    }
+    static string ConvertToKhmerNumber(string str)
+    {
+        if (string.IsNullOrEmpty(str)) return str;
+        char[] khmerDigits = { '០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩' };
+        var result = new System.Text.StringBuilder();
+        foreach (char c in str)
+        {
+            if (char.IsDigit(c))
+                result.Append(khmerDigits[c - '0']);
+            else
+                result.Append(c);
+        }
+        return result.ToString();
     }
 
     static void ExplainCSharpNamingConvention()
